@@ -1,6 +1,6 @@
-	SELECT * FROM MoonMissions
+DROP TABLE SuccessfulMissions
 
--- SPACE, Excercise 1
+-- SPACE, Exercise 1
 SELECT 
 	[Spacecraft], 
 	[Launch date],
@@ -22,16 +22,14 @@ SET
 
 GO
 
-Update SuccessfulMissions
-SET Spacecraft = LEFT(Spacecraft, Charindex('(' , Spacecraft) -1)
-Where Charindex('(', Spacecraft) > 0
---https://stackoverflow.com/questions/1668014/sql-server-replace-remove-all-after-certain-characterGO
+Update 
+	SuccessfulMissions
+SET 
+	Spacecraft = LEFT(Spacecraft, Charindex('(' , Spacecraft) -1)
+Where 
+	Charindex('(', Spacecraft) > 0
 
 GO
-
--- Skriv en select, Som tar ut och grupperar, samt sorterar på kollumnerna
--- Operator, Mission type FRÅN Succesful Missions
-
 SELECT 
 	[Operator], 
 	[Mission type],
@@ -48,7 +46,8 @@ ORDER BY
 GO
 
 -- USERS, Exercise 2
-Select * from Users
+DROP TABLE NewUsers
+
 SELECT 
 	[ID],
 	[UserName],
@@ -72,9 +71,12 @@ GO
 SELECT 
 	[Username] AS 'Duplicates',
 	Count([Username]) AS 'Count'
-FROM NewUsers
-GROUP BY UserName
-Having Count([Username]) > 1
+FROM 
+	NewUsers
+GROUP BY 
+	UserName
+Having 
+	Count([Username]) > 1
 
 GO
 
@@ -100,15 +102,12 @@ WHERE
 
 GO
 
--- Remove women born before 1970
-
 DELETE FROM
 	NewUsers
-Where Left(ID,2) < 70 AND Gender = 'Female'
+WHERE 
+	Left(ID,2) < 70 AND Gender = 'Female'
 
 GO
-
--- Add a new user
 
 INSERT INTO NewUsers
 VALUES
@@ -119,7 +118,7 @@ VALUES
 	'Alex Balner', 
 	'Male', 
 	'alex.balner@gmail.com', 
-	0707-694200
+	N'0707-694200'
 )
 
 GO
@@ -131,11 +130,12 @@ FROM
 	NewUsers
 Group by 
 	Gender
+ORDER BY 
+	'Gender' desc
 
 GO
 
 -- COMPANY Exercise 3
--- Joins
 
 SELECT 
 	p.Id AS 'Id',
@@ -161,9 +161,6 @@ GROUP BY
 	r.Id, r.RegionDescription
 
 GO
-
-
-SELECT * FROM company.employees
 		
 SELECT 
 	e.Id, 
