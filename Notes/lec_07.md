@@ -1,0 +1,131 @@
+- # [[IT-Högskolan/course/databases]] [[lecture]] [[7]] - [[Design]] and [[Administration]]
+  #databases
+	- what does ACID mean #card
+		- Atomicity
+		- Consistency
+		- Isolation
+		- Durability
+	- what is ACID #card
+		- properties that a relational database can handle to ensure transactions are performed correctly
+		- ensured by DBMS
+	- what is a transaction #card
+		- en följd of operations belonging to / connected as one unit
+		- for example:
+			- mobing money from one bank acount to another
+		- in database sammanhang talk about ACID
+	- what are constraints #card
+		- settings for what is allowed to be entered into a database
+	- what are some different constraints #card
+		- datatype
+		- length of data
+		- allow nulls / not null
+		- primary keys (only unique values)
+		- foreign keys (points to primary keys of another table/column)
+		- unique
+	- what is consistency #card
+		- what type of data is allowed to be set in tables
+			- the database can not contain any contradictions
+			- set constraints the database must follow
+			- design database to minimize risk of contradictions
+				- for example separating books and authors into 2 tables to avoid entering wrong date of birth
+	- how many processes can one CPU run at once #card
+		- as many as the number of cores it has
+	- what allows a computer to execute multiple processes at the same time #card
+		- having multiple CPU cores
+		- each core can execute one process
+	- why can a computer have more processes running than the number of CPU cores #card
+		- because it splits the processes up into parts, running one process for a short time, pausing it, then running the next, and so on
+		- the result looks like multiple processes are ran at once, but in actuality it's only one process per core at any one time
+	- what is isolation #card
+		- transactions must be isolated from one another
+		- changes of one transaction are not allowed to be shown to the second transaction until the whole operation is done
+	- what can happen if transactions are not isolated from each other #card
+		- if T1 changes values of some column or variable which T2 also uses, then T2 might fetch that value before it was changed
+		- for example:
+			- ```SQL
+			  T1 x=5, x=10
+			  T2 y=x
+			  Result T2: y=5
+			  ```
+	- how are transactions isolated #card
+		- by locking data used in the transaction
+	- what is durability #card
+		- when a transaction is completed, all updates and modifications in the database need to be stored in a lasting manner
+		- which is to say, written to disk (instead of only held in memory) so all changes remain even if a system error occurs
+	- what is commit #card
+		- tells the DBMS that a transaction is done and should be executed
+		- it's first when the DBMS encounters the commit command that is permanently stores the changes made in current transaction
+	- what is rollback #card
+		- tells the DBMS that a transaction should be interrupted and rolled back entirely
+		- the DBMS resets all data to the state in which it was before transaction start
+	- recovery at crash #card
+		- interrupted incomplete transactions are rolled back
+		- finished transactions must be controlled, if they have changes that are not written to disk it needs to be done now
+	- types of backup #card
+		- full backup
+		- differential backup
+		- transaction log backup
+	- what is a full backup #card
+		- backup entire database
+	- what is a differential backup #card
+		- back up the difference since last full backup
+		- initially very fast since difference is small, but over time grow larger and larger, so it's a good idea to take new full backups every once in a while
+	- what is a transaction log backup #card
+		- backup of the transaction log
+		- from latest differential backup all transactions can be remade step by step
+		- also possible to omit problematic transactions through this method
+	- what is recovery model: full #card
+		- full transaction log is saved
+		- transaction log on disk might get very large
+	- what is recovery model: simple #card
+		- only ongoing transactions are saved
+		- cannot recover by stepping forward in transaction log
+	- what is copy-only backup #card
+		- does not break the chain of backup history
+		- for example used if wanting to copy a database for some testing without changing which full backup upcoming differential backups or transaction log backups are made off
+	- what is a transaction log #card
+		- a file which stores all changes made to a file before they are executed
+		- used in order to enable roll backs of transactions
+		- for each change made the DBMS first writes the following in the log file:
+			- 1. what transaction
+			  2. what data object
+			  3. what the old value was
+			  4. what the new value will be
+		- mdf - ROWS data
+		- ldf - LOG
+	- what determines database file's file size #card
+		- autogrowth - starts at 8 MB and grows by 64 MB when needed
+		- so a file that grows beyond 8 MB would automatically grow in size to 72 MB
+	- why is the transaction log relevant when restoring a backup #card
+		- backups are usually only taken with some interval
+		- transaction log can be used to recreate all the steps since the last backup until the point of failure
+		- this ensures that all transactions made since the last backup will not be lost
+	- what are locks #card
+		- ensuring isolation by locking data used in one transaction so the first transaction completes before the second one starts in the case where they both use the same data
+	- TODO question locks
+		- does it lock everything before transaction begins?
+		- should used values be entered early in statements
+		- how to see ongoing transactions in server using SSMS
+			- right click database -> activity monitor
+	- does kill process commit or rollback #card
+		- rollback
+	- what are blockages #card
+		- when an isolated process uses some data that data will be locked, other processes will be blocked from using that data until the first process is done
+	- what are deadlocks #card
+		- T1 locks table A
+		- T2 locks table B
+		- T1 wants to lock table B but is blocked by T2
+		- T2 wants to lock table A but is blocked by T1
+	- what does the DBMS do in a deadlock scenario #card
+		- rollbacks one transaction with the error message:
+			- "Transacion was deadöpcled and has been chosen as victim. Rerun the transaction"
+	- how to avoid deadlocks #card
+		- design code to access tables in the same order to minimize risk
+		- avoid cyclic dependence of resources
+		- can set priority on requests, lower priority will be interrupted if deadlock
+		- what is important to back up other than the database
+			- master database
+				- contains metadata for tables
+	- what is important to do when backing up databases #card
+		- regularly test that the backups actually work
+		- ensure other servers / computers are available to run if the current one is down

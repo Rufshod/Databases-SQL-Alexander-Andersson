@@ -1,0 +1,49 @@
+- # [[IT-Högskolan/course/databases]] [[lecture]] [[6]] - [[SQL]]
+  #databases
+	- what does KiB mean, and what is it #card
+		- kibibytes
+		- 1024 bytes
+	- what does MiB mean, and what is it #card
+		- mibibytes
+		- 1024 * 1024 bytes
+	- what does KB mean, and what is it #card
+		- kilobyte
+		- 1000 bytes
+	- what does MB mean, and what is it #card
+		- 1000 * 1000 bytes
+	- what does the newid() function do #card
+		- gives each row a GUID
+	- how to make a random sort on results #card
+		- using newid()
+		- ```SQL
+		  ORDER BY newid()
+		  ```
+	- what are the pros and cons of using a subquery under select #card
+		- possible to use other data under from since subquery is directly under select
+		- subquery results only in one column, cannot be used in other columns unless repeating subquery multiple times
+	- what are the pros and cons of using a subquery under from #card
+		- possible to use subquery results in multiple columns
+		- only data from subquery result can be used since only that data was selected
+	- what is a potential efficiency loss of using subqueries under select instead of joins #card
+		- if using a subquery that uses data from the main query, data will be accessed per row which is very inefficient
+		- using join instead will only access and join data once, and then take out values from that joined result
+	- what is SQLAlchemy #card
+		- a tool to use SQL through Python
+		- manages connectivity to database
+		- interactions with database queries and results
+		- programmatic construction of SQL statements
+	- what does ORM mean #card
+		- object-relational mapping
+	- what is ORM #card
+		- an object-oriented system that converts:
+			- folders between database tables to classes
+			- table rows to objects
+			- cells to object attributes
+	- what is a connection string #card
+		- a string that says how to connect to a server
+	- how to find connection strings #card
+		- connectionstrings.com
+	- what does the GO command do #card
+		- GO is not an SQL command, it is an SSMS command
+		- separates the code to finish running everything before and then runs the code after
+		- can use like GO 3 to run the code before 3 times

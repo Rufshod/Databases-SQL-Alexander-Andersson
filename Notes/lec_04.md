@@ -1,0 +1,62 @@
+- # [[IT-Högskolan/course/databases]] [[lecture]] [[4]] - [[SQL]]
+  #databases
+	- what are limitations of foreign keys #card
+		- cannot enter a key that does not exist in the table where they are primary keys
+		- this is generally a good limitation to ensure an invalid primary key is not entered
+	- what are some different things that can be used as primary keys #card
+		- ID - counting up from a start value (usually 1), incrementing by some value (usually 1)
+		- unique ID for that type of object:
+			- personnr - unique identifier for people
+			- ISBM - unique identifier for books
+		- GUID - 32 hexadecimal number identifier
+	- TODO what is GUID
+	- what types of joins are there #card
+		- cross join
+		- inner join
+		- full join
+		- left join
+		- right join
+	- what is cross join #card
+		- join all possible combinations of rows from table A and B
+		- resulting rows is always # of rows in table A times # of rows in table B
+			- i.e. 3x1 join 3x1 table -> 9x1 table
+	- what is inner join #card
+		- join only matching in both tables
+	- what is full join #card
+		- join everything in both tables, even if not matching
+	- what is left join #card
+		- join on everything in left table, even if not matching with right
+		- does not join on rows in right table that do not match with left
+	- what is right join #card
+		- join on everything in right table, even if not matching with left
+		- does not join on rows in left table that do not match with right
+	- what is the default type of join #card
+		- inner join
+		- if join is used without specifying the type, an inner join will be performed
+	- how to declare an alias for a table #card
+		- convention is for alias to be first letter(s) of table name
+		- ```SQL
+		  [Books] b
+		  ```
+	- what is one to many relation #card
+		- a relation where:
+			- rows of table A can be linked to multiple rows in table B
+			- rows of table B can only be linked to one row in table A
+		- example:
+			- countries and cities:
+				- countries can have many cities
+				- cities can (usually) only be located in one country
+	- what is many to many relation #card
+		- a relation where:
+			- rows of table A can be linked to multiple rows in table B
+			- rows of table B can be linked to multiple rows in table A
+		- example:
+			- students and classes:
+				- students can have many classes
+				- classes can have many students
+	- what is junction table #card
+		- a table with 2 columns containing the IDs of 2 tables to join in a many to many relation
+	- what is the conventional way of naming junction tables #card
+		- tableaTableb
+		- for example:
+			- CoursesStudents
